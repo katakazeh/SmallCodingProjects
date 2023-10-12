@@ -1,0 +1,78 @@
+from datetime import datetime
+import threading
+import logging
+import time
+
+#get current date and take second and turn into integer
+
+currentDateAndTime = datetime.now()
+currentHour = int(currentDateAndTime.strftime("%S"))
+
+#print(currentHour)
+
+d = 0
+
+m = 0
+
+#ask user for number of pills
+
+numberPills = input("Number of Different Types of Pills: ")
+numberPills = int(numberPills)
+
+pillList = []
+timeList = []
+sameTimeList = []
+deleteIndex = []
+
+#ask information about pill and put into array
+
+for x in range(numberPills):
+  pill1 = input("Name of Pill: ")
+  pillList.append(pill1)
+
+  time1 = input("Time of Dose: ")
+  time1 = int(float(time1))
+  timeList.append(time1)
+
+#index of duplicates
+
+oc_set = set()
+res = []
+for idx, val in enumerate(timeList):
+  if val not in oc_set:
+    oc_set.add(val)
+  else:
+    res.append(idx)
+
+#if index of duplicates is a difference of one, that means they are duplicates of the same number behind it
+
+for x in range(len(res) - 1):
+  if res[x + 1] - res[x] == 1:
+    s1 = res[x]
+    s2 = res[x + 1]
+    s3 = "%s %s" % (s1, s2)
+    pillList[x] = s3
+    deleteIndex.append(res[x + 1])
+
+for x in range(len(deleteIndex)):
+  pillList.pop(deleteIndex[x])
+  timeList.pop(deleteIndex[x])
+#loop infinitely; add one to second every second, if 60 seconds then automatically go back to 0
+
+print(pillList)
+print(timeList)
+
+while 1 == 1:
+
+  currentHour = currentHour + 1
+  time.sleep(1)
+  if currentHour == 60:
+    currentHour = 00
+
+  #print(currentHour)
+
+  # if item in time array is equal to time, print pill name
+
+  if timeList[d] == currentHour:
+    print(pillList[d])
+    d = d + 1  #iterate through arrays
